@@ -18,10 +18,10 @@ type function struct {
 
 var t = template.Must(template.New("Name").ParseFiles("templates/index.tmpl"))
 
-func makeFunctions(slice []string, origin string) []function {
+func makeFunctions(slice []string, origin string, URL string) []function {
 	var funcs []function
 	for _, f := range slice {
-		funcs = append(funcs, function{Name: f, Origin: origin})
+		funcs = append(funcs, function{Name: f, Origin: origin, URL: URL})
 	}
 	return funcs
 }
@@ -29,7 +29,7 @@ func makeFunctions(slice []string, origin string) []function {
 func goBuiltinFuncs() []function {
 	// Go doesn't export the function names anywhere so we have to list them ourselves
 	funcs := []string{"and", "call", "html", "index", "slice", "js", "len", "not", "or", "print", "printf", "println", "urlquery", "eq", "ge", "gt", "le", "lt", "ne"}
-	return makeFunctions(funcs, "Go BuiltIn")
+	return makeFunctions(funcs, "Go BuiltIn", "https://pkg.go.dev/text/template?tab=doc#hdr-Functions")
 }
 
 func sprigFuncs() []function {
@@ -37,13 +37,13 @@ func sprigFuncs() []function {
 	for k := range sprig.FuncMap() {
 		funcs = append(funcs, k)
 	}
-	return makeFunctions(funcs, "Sprig")
+	return makeFunctions(funcs, "Sprig", "https://masterminds.github.io/sprig/")
 }
 
 func helmFuncs() []function {
 
 	funcs := []string{"toToml", "toYaml", "fromYaml", "fromYamlArray", "toJson", "fromJson", "fromJsonArray"}
-	return makeFunctions(funcs, "Helm")
+	return makeFunctions(funcs, "Helm", "https://github.com/helm/helm/blob/97c68adc4d53c13fb32432010a8f7c5172e3549d/pkg/engine/funcs.go#L50-L57")
 }
 
 func main() {
